@@ -6,6 +6,7 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import ImageIcon from '@mui/icons-material/Image';
+import DeleteIcon from '@mui/icons-material/Delete';
 import moment from 'moment';
 import axios from "axios";
 import {useHistory} from 'react-router-dom';
@@ -16,16 +17,26 @@ export default function MainPage() {
 
     const linkToQR = (externalID) => history.push(`/qr/${externalID}`);
     const linkToAdd = () => history.push(`/add`);
+    const handleDelete = (id) => {
+        axios
+            .delete(`https://bel-app.herokuapp.com/api/file/${id}`)
+            .then(res => res.data)
+            .then(res => {
+                if (res?.status) fetchListData();
+            })
+    }
+
+    const fetchListData = () => {
+        axios
+            .get(`https://bel-app.herokuapp.com/api`)
+            .then(res => res.data)
+            .then(res => {
+                if (res?.status) setListData(res.result);
+            })
+    }
 
     useEffect(() => {
-        (async function () {
-            axios
-                .get(`https://bel-app.herokuapp.com/api`)
-                .then(res => res.data)
-                .then(res => {
-                    if (res?.status) setListData(res.result);
-                })
-        })();
+        fetchListData();
     }, []);
 
     return (
@@ -46,7 +57,11 @@ export default function MainPage() {
                                 </ListItemAvatar>
                                 <ListItemText
                                     primary={item.externalID}
-                                    secondary={moment(item.createdAt).format('YYYY-MM-DD HH-mm-dd')}/>
+                                    secondary={moment(item.createdAt).format('YYYY-MM-DD HH-mm-dd')}
+                                />
+                                <DeleteIcon
+                                    onClick={() => handleDelete(item._id)}
+                                />
                             </ListItem>
                         ))
                     }
