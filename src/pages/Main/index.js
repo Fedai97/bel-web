@@ -57,7 +57,7 @@ export default function MainPage() {
                                 </ListItemAvatar>
                                 <ListItemText
                                     primary={item.externalID}
-                                    secondary={moment(item.createdAt).format('YYYY-MM-DD HH-mm-dd')}
+                                    secondary={moment(item.createdAt).format('YYYY-MM-DD HH:mm')}
                                 />
                                 <DeleteIcon
                                     onClick={() => handleDelete(item._id)}
