@@ -6,35 +6,16 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import ImageIcon from '@mui/icons-material/Image';
+import moment from 'moment';
 import axios from "axios";
-import Box from '@mui/material/Box';
-import Modal from '@mui/material/Modal';
-
-const style = {
-    position: 'absolute',
-    top: '40%',
-    left: '40%',
-    height: 'auto',
-};
+import {useHistory} from 'react-router-dom';
 
 export default function MainPage() {
+    const history = useHistory();
     const [listData, setListData] = useState(null);
-    const [open, setOpen] = useState(false);
-    const [qr, setQR] = useState('');
 
-    const handleOpen = (externalID) => {
-        setOpen(true);
-        axios
-            .post(`https://bel-app.herokuapp.com/api/qr/${externalID}`)
-            .then(res => res.data)
-            .then(res => {
-                if (res?.status) setQR(res.result);
-            })
-    }
-    const handleClose = () => {
-        setOpen(false);
-        setQR('');
-    }
+    const linkToQR = (externalID) => history.push(`/qr/${externalID}`);
+    const linkToAdd = () => history.push(`/add`);
 
     useEffect(() => {
         (async function () {
@@ -50,7 +31,7 @@ export default function MainPage() {
     return (
         <div style={{height: '70px', margin: '30px'}}>
             <div>
-                <Button variant="outlined">ADD</Button>
+                <Button variant="outlined" onClick={linkToAdd}>ADD DOCUMENT</Button>
             </div>
             {
                 !!listData?.length
@@ -58,30 +39,19 @@ export default function MainPage() {
                     {
                         listData.map((item, key) => (
                             <ListItem key={key}>
-                                <ListItemAvatar onClick={() => handleOpen(item?.externalID)}>
+                                <ListItemAvatar onClick={() => linkToQR(item?.externalID)}>
                                     <Avatar>
                                         <ImageIcon/>
                                     </Avatar>
                                 </ListItemAvatar>
-                                <ListItemText primary={item.title} secondary={item.externalID}/>
+                                <ListItemText
+                                    primary={item.externalID}
+                                    secondary={moment(item.createdAt).format('YYYY-MM-DD HH-mm-dd')}/>
                             </ListItem>
                         ))
                     }
                 </List>
             }
-            <Modal
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-            >
-                <Box sx={style}>
-                    {
-                        !!qr?.length
-                        && <img src={qr} alt=""/>
-                    }
-                </Box>
-            </Modal>
         </div>
     )
 }
