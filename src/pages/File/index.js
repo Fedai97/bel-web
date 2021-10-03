@@ -24,12 +24,14 @@ export default function FilePage({match}) {
 
     return !fileData
         ? <div>Loading...</div>
-        : <embed
-            src={fileData}
-            id="displayFile"
-            alt="your image"
-            width="100%"
-            height="99%"
-            type="application/pdf"
-        />
+        : <div>
+            <embed
+                src={fileData}
+                id="displayFile"
+                alt="your image"
+                width="100%"
+                height={window.innerHeight}
+                type="application/pdf"
+            />
+        </div>
 }
