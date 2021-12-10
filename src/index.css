@@ -3,17 +3,44 @@
 }
 
 .MuiSvgIcon-root.MuiSvgIcon-fontSizeMedium.css-i4bv87-MuiSvgIcon-root,
-.MuiListItemAvatar-root.css-1e9lk82-MuiListItemAvatar-root{
+.MuiListItemAvatar-root.css-1e9lk82-MuiListItemAvatar-root {
     cursor: pointer;
 }
 
-.add-container{
+.add-container {
     display: flex;
     flex-direction: column;
     width: 50%;
     margin: 20px auto !important;
 }
 
-.add-container > div{
+.add-container > div {
     margin-bottom: 10px;
+}
+.file-download-btn{
+    display: flex;
+    justify-content: center;
+    margin: 20px;
+    font-size: 24px;
+    color: black;
+    font-family: Arial;
+}
+a:link {
+    text-decoration: none;
+    color: black;
+}
+
+a:visited {
+    text-decoration: none;
+    color: black;
+}
+
+a:active {
+    text-decoration: none;
+    color: black;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: black;
 }
